@@ -8,8 +8,8 @@ Arp poisoning should work, automatically initiates the attackers mac and ip addr
 * refactor code after implemented previous steps (to work for multiple pairs of victims for example)
 
 ## next next steps
-* dns poisoning 
-* use ssl strip module also for dns poisoning
+* see why dns spoof does not work as it should
+* make ssl strip
 
-## main idea, arp || dns poisoning places us in the middle, thus ssl stripping becomes possible
+## main idea, arp poisoning places us in the middle, thus dns spoofing and ssl stripping becomes possible
 
