@@ -8,6 +8,7 @@ from scapy.layers.l2 import Ether, ARP
 # icmp to capture
 global icmp_packet_global
 
+
 class GetIpMac:
     # method dedicated to sniffing the icmp package
     def sniff_icmp(self):
@@ -24,7 +25,7 @@ class GetIpMac:
 
         send(icmp_packet)
 
-    #find the mac and ip of the current device
+    # find the mac and ip of the current device
     def find_mac_ip(self, packet):
 
         if packet[0].haslayer(Ether):
