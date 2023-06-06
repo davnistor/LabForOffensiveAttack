@@ -4,9 +4,9 @@ import threading
 
 from scapy.layers.l2 import Ether, ARP
 
-
+# class that contains code for the arp poisoning
 class ArpPoisoning:
-    # initialize the mac and ips of the victims
+    # initialize the mac and ips of the victims, attacker and interface to send packages through
     def __init__(self, ip_victim1, ip_victim2, mac_attacker, ip_attacker, interface):
         self.ip_victim1 = ip_victim1
         self.ip_victim2 = ip_victim2
