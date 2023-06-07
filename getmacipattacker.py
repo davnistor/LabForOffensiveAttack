@@ -31,10 +31,11 @@ class GetIpMac:
     # sends ping to random address
     def send_ping(self):
         global icmp_packet_global
-        while icmp_packet_global is None:
-            icmp_packet = IP() / ICMP()
-            icmp_packet[IP].dst = "192.168.56.107"
 
+        icmp_packet = IP() / ICMP()
+        icmp_packet[IP].dst = "192.168.56.107"
+
+        while icmp_packet_global is None:
             send(icmp_packet, iface=self.interface)
 
     # find the mac and ip of the current device
