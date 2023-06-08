@@ -23,7 +23,7 @@ global type_of_attack
 global redirect_website
 
 if len(sys.argv) != 6:
-    print("Invalid number of arguments. Uasge: python3 main.py ip_victim_1 ip_victim_2 interface type_of_attack "
+    print("Invalid number of arguments. Usage: python3 main.py ip_victim_1 ip_victim_2 interface type_of_attack "
           "redirect_website")
 else:
     ip_victim_1 = sys.argv[1]

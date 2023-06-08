@@ -54,6 +54,5 @@ class GetIpMac:
 
         # send packet to be sniffed, get the mac of the attacker
         self.send_ping()
-        time.sleep(4)
         return self.find_mac_ip(icmp_packet_global)
 
